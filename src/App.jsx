@@ -1,17 +1,20 @@
 import TodoItem from "./TodoItem";
 import AddTaskForm from "./AddTaskForm";
-import { useState } from "react";
+import { use, useState } from "react";
 import { nanoid } from "nanoid";
-
+import Modal from "./Modal";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 
 function App(props) {
   const [taskList, setTaskList] = useState(props.tasks);
+  const [isOpen, setIsOpen] = useState(false);
 
   function addTask(name) {
     const newTask = { id: `todo-${nanoid()}`, name: name, completed: false };
     let arrayCopy = [...taskList, newTask];
     setTaskList(arrayCopy);
+    setIsOpen(false);
   }
 
   function toggleTaskCompleted(id) {
@@ -31,9 +34,16 @@ function App(props) {
   
   return (
     <main className="m-4">
-      <AddTaskForm onNewTask={addTask} />
+
+      {isOpen && <Modal headerLabel="New Task"
+        onCloseRequested={() => setIsOpen(false)}>
+        <AddTaskForm onNewTask={addTask} />
+        </Modal>}
+
       <section>
-              <h1 className="text-xl font-bold">To do</h1>
+      <button className="border bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white 
+            rounded-md p-1" onClick={() => setIsOpen(true)}>Add Task </button>
+        <h1 className="text-xl font-bold">To do</h1>
               <ul>
               {taskList?.map((task) => (
                 <TodoItem
