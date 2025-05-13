@@ -3,21 +3,30 @@ import AddTaskForm from "./AddTaskForm";
 import { use, useState } from "react";
 import { nanoid } from "nanoid";
 import Modal from "./Modal";
-import { faL } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
 
+interface ITask {
+  id: string;
+  name: string;
+  completed: boolean;
+}
 
-function App(props) {
-  const [taskList, setTaskList] = useState(props.tasks);
+interface IAppProps {
+  tasks: ITask[];
+}
+
+function App(props: IAppProps) {
+  const [taskList, setTaskList] = React.useState<ITask[]>(props.tasks);
   const [isOpen, setIsOpen] = useState(false);
 
-  function addTask(name) {
+  function addTask(name: string) {
     const newTask = { id: `todo-${nanoid()}`, name: name, completed: false };
     let arrayCopy = [...taskList, newTask];
     setTaskList(arrayCopy);
     setIsOpen(false);
   }
 
-  function toggleTaskCompleted(id) {
+  function toggleTaskCompleted(id: string) {
     const updatedTasks = taskList.map((task) => {
       if (id === task.id) {
         return { ...task, completed: !task.completed };
@@ -27,7 +36,7 @@ function App(props) {
     setTaskList(updatedTasks);
   }
 
-  function deleteTask(id) {
+  function deleteTask(id: string) {
     const remainingTasks = taskList.filter((task) => id !== task.id);
     setTaskList(remainingTasks);
   }

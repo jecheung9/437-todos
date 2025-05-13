@@ -1,13 +1,22 @@
-import { useRef } from "react";
+import React, { useRef } from "react";
 
-function Modal(props) {
-    const myRef = useRef(null);
+interface IModalProps {
+    children: React.ReactNode;
+    headerLabel: string;
+    onCloseRequested: () => void;
+
+}
+
+function Modal(props: IModalProps) {
+    const myRef = useRef<HTMLDivElement>(null);
     return (
         <div className="w-screen h-screen top-0 left-0 fixed bg-gray-400/50 flex justify-center items-center"
-            onClick={(e) => {
-                if (!myRef.current.contains(e.target)) {
-                    props.onCloseRequested();
-            }
+            onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                if (myRef.current) {
+                    if (!myRef.current.contains(e.target as Node)) {
+                        props.onCloseRequested();
+                    }
+                }
         }}>
             <div className="bg-white p-5 rounded-lg" ref={myRef}>
                 <header className="flex justify-between pb-3">

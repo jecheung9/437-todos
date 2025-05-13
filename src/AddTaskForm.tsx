@@ -1,9 +1,13 @@
 import { useState } from "react";
 
-function AddTaskForm({ onNewTask }) {
+interface IAddTaskFormProps {
+    onNewTask: (name: string) => void;
+}
+
+function AddTaskForm({ onNewTask }: IAddTaskFormProps) {
     const [name, setName] = useState("");
 
-    function handleButtonClicked() {
+    function handleButtonClicked(e: React.MouseEvent<HTMLButtonElement>) {
         onNewTask(name);
         setName("");
     }
